@@ -44,4 +44,3 @@ profile ssh /usr/bin/ssh {
   deny @{PROC}/{,**} r,
 }
 
-

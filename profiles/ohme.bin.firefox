@@ -22,8 +22,7 @@ profile firefox /usr/lib/firefox/firefox{,*[^s][^h]} {
   #include <abstractions/nameservice>
   #include <abstractions/openssl>
   #include <abstractions/p11-kit>
-  #include <abstractions/ubuntu-unity7-base>
-  #include <abstractions/ubuntu-unity7-launcher>
+  #include <abstractions/oho-downloads>
 
   #include <abstractions/dbus-accessibility-strict>
   dbus (send)
@@ -159,11 +158,11 @@ profile firefox /usr/lib/firefox/firefox{,*[^s][^h]} {
   /**/ r,
 
   # Default profile allows downloads to ~/Downloads and uploads from ~/Public
-  owner @{HOME}/ r,
-  owner @{HOME}/Public/ r,
-  owner @{HOME}/Public/* r,
-  owner @{HOME}/Downloads/ r,
-  owner @{HOME}/Downloads/* rw,
+  # owner @{HOME}/ r,
+  # owner @{HOME}/Public/ r,
+  # owner @{HOME}/Public/* r,
+  # owner @{HOME}/Downloads/ r,
+  # owner @{HOME}/Downloads/* rw,
 
   # per-user firefox configuration
   owner @{HOME}/.{firefox,mozilla}/ rw,
@@ -300,7 +299,37 @@ profile firefox /usr/lib/firefox/firefox{,*[^s][^h]} {
   }
 
   # Addons
+  # Don't allow launching other applications to open files
+  deny /usr/bin/gio-launch-desktop rx,
+  deny /etc/mailcap r,
+
+  # Deny unnecessary /proc
+  deny @{PROC}/@{pid}/{,**} rw,
+  deny @{PROC}/bus/pci/devices r,
+  deny @{PROC}/sys/kernel/random/boot_id r,
+
+  # Deny /var and /tmp
+  deny /var/{,**} rw,
+
+  # Deny unnecessary /proc
+  deny @{system_share_dirs}/gvfs/remote-volume-monitors/ r,
+
+  # Don't allow executable mapping of arbitrary files
+  deny @{HOME}/#* mrw,
+  deny @{HOME}/.gl* mrw,
+
+  # Silence denial logs about permissions we don't need
+  deny capability sys_admin,
+  deny /usr/lib/firefox*/{crashreporter,pingsender} rx,
+  deny @{sys}/bus/pci/devices/ r,
+  deny @{sys}/devices/system/cpu/** r,
+  deny /usr/bin/lsb_release rx,
+  deny /usr/lib/firefox*/{,**} w,
+  deny @{system_share_dirs}/applications/{,**} r,
+  deny @{HOME}/Desktop/ w,
+  deny @{HOME}/.cache/thumbnails/{,**} rw,
+  deny @{HOME}/.local/{,**} rw,
 
   # Site-specific additions and overrides. See local/README for details.
-  #include <local/usr.bin.firefox>
+  #include <local/oho.bin.firefox>
 }

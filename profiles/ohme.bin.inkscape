@@ -1,0 +1,28 @@
+#include <tunables/global>
+
+profile inkscape /{usr/,}bin/inkscape {
+    #include <abstractions/base>
+    #include <abstractions/user-tmp>
+    #include <abstractions/X>
+    #include <abstractions/wayland>
+    #include <abstractions/user-download-strict>
+    #include <abstractions/fonts>
+
+    owner @{XDG_PICTURES_DIR}/ r,
+    owner @{XDG_PICTURES_DIR}/** rw,
+
+    @{system_share_dirs}/{inkscape,mime,themes,icons,pixmaps}/{**,} r,
+    /usr/lib/inkscape/** rix,
+
+    owner @{HOME}/.gtkrc-2.0 r,
+    owner @{HOME}/.config/gtk-2.0/** r,
+    owner @{HOME}/.config/inkscape/{**,} rw,
+    owner @{HOME}/.cache/inkscape/{**,} rw,
+    owner @{user_share_dirs}/icons/{**,} r,
+    owner @{user_share_dirs}/mime/** r,
+    owner @{HOME}/.config/gtk-3.0/bookmarks r,
+    owner @{HOME}/.config/user-dirs.dirs r,
+    owner @{HOME}/.config/gtk-2.0/gtkfilechooser.ini* w,
+
+    #include if exists <local/ohme.bin.inkscape>
+}

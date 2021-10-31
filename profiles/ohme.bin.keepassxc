@@ -1,0 +1,55 @@
+# Author: Anton Nesterov <anton@nesterov.cc>
+#include <tunables/global>
+
+profile keepassxc /{usr/,}bin/keepassxc {
+  #include <abstractions/base>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/wayland>
+  #include <abstractions/mesa>
+  #include <abstractions/dri-enumerate>
+  #include <abstractions/user-tmp>
+  #include <abstractions/qt5-compose-cache-write>
+
+  /{usr/,}bin/keepassxc mr,
+  @{system_share_dirs}/{icons,keepassxc,mime}/{**,} r,
+  @{system_share_dirs}/qt5ct/qss/*.qss r,
+  @{system_share_dirs}/libdrm/amdgpu.ids r,
+  /etc/glvnd/egl_vendor.d/ r,
+  @{system_share_dirs}/glvnd/egl_vendor.d/{**,} r,
+  @{PROC}/sys/kernel/random/boot_id r,
+  /dev/bus/usb/ r,
+  @{sys}/bus/ r,
+  @{sys}/bus/usb/devices/ r,
+  @{sys}/class/ r,
+  @{sys}/devices/** r,
+  /{var/,}run/udev/** r,
+  owner @{PROC}/@{pid}/fd/ r,
+  owner @{PROC}/@{pid}/comm r,
+
+  owner /tmp/keepassxc-user.lock rw,
+  owner @{HOME}/.config/keepassxc/{**,} rwkl,
+  owner @{HOME}/.cache/keepassxc/{**,} rw,
+  owner @{HOME}/.config/qt5ct/** r,
+  owner @{HOME}/.config/fontconfig/fonts.conf r,  
+  owner @{HOME}/.cache/icon-cache.kcache rw,
+  owner @{HOME}/.config/QtProject.conf r,
+  owner @{HOME}/.config/user-dirs.dirs r,
+  owner @{HOME}/.mozilla/native-messaging-hosts/org.keepassxc.keepassxc_browser.json rw,
+  owner /dev/shm/* rw,
+  owner /dev/tty1 rw,
+  owner /{var/,}run/user/@{uid}/** rw,
+  owner @{user_share_dirs}/mime/** r,
+
+  deny /dev/ r,
+  
+  deny /etc/nsswitch.conf r,
+  deny /etc/passwd r,
+
+  deny /{usr/,}bin/ r,
+  deny @{HOME}/.config/QtProject.conf w,
+
+  deny network,
+
+  #include if exists <local/ohme.bin.keepassxc>
+}

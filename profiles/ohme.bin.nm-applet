@@ -1,0 +1,30 @@
+#include <tunables/global>
+
+profile nm-applet /{usr/,}bin/nm-applet {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/wayland>
+  #include <abstractions/dri-enumerate>
+  #include <abstractions/mesa>
+  #include <abstractions/fonts>
+  #include <abstractions/dconf>
+
+  @{system_share_dirs}/{themes,poppler,icons,pixmaps,mime}/{**,} r,
+  @{system_share_dirs}/glib-2.0/schemas/gschemas.compiled r,
+  @{system_share_dirs}/libdrm/amdgpu.ids r,
+  /{usr/,}bin/nm-connection-editor ix,
+  /etc/passwd r,
+  /etc/nsswitch.conf r,
+
+  owner @{HOME}/.config/gtk-3.0/settings.ini r,
+  owner @{HOME}/.config/gtk-3.0/bookmarks r,
+  owner @{HOME}/.config/user-dirs.dirs r,
+  owner /{,var/}run/user/@{uid}/dconf/{*,} rw,
+  owner @{user_share_dirs}/icons/{**,} r,
+  owner @{PROC}/@{pid}/fd/ r,
+  owner @{user_share_dirs}/mime/{**,} r,
+
+  deny /dev/tty* rw,
+
+  #include if exists <local/ohma.bin.nm-applet>
+}
