@@ -1,0 +1,36 @@
+env:
+  TERM: xterm-256color
+
+live_config_reload: true
+
+font pango: monospace 8
+
+font:
+  bold:
+    family: "Terminus"
+    style: Bold
+  bold_italic:
+    family: "Terminus"
+    style: Bold Itailc
+  itailc:
+    family: "Terminus"
+    style: Medium Itailc
+  normal:
+    family: "Terminus"
+    style: Medium
+  size: 12
+
+selection:
+  save_to_clipboard: true
+
+background_opacity: 0.85
+
+hints:
+  enabled:
+   - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
+             [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+     command: xdg-open
+     post_processing: true
+     mouse:
+       enabled: false
+       mods: None

@@ -1,0 +1,12 @@
+file:///home/hola/ROM/learnVite/reader/toknow.md {"mtime":1633269187989,"ctime":1633251762099,"size":193,"etag":"37jnae1b167","orphaned":false,"typeId":""}
+# basic Node
+
+## Yarn
+yarn add -D babel-loader @babel/core @babel/preset-env webpack webpack-cli
+
+### .yarnrc
+```
+disturl "https://electronjs.org/headers"
+target "13.5.1"
+runtime "electron"
+```
